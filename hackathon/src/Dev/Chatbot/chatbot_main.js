@@ -137,11 +137,10 @@ function Chatbot_main() {
     const sendMessage = async (isOnBorad) => {
         let prompt;
         let newMessages;
-        if (input.trim() === '') return;
-        if (input === '온보딩' || isOnBorad === '온보딩') {
+        if (input === '온보딩' || isOnBorad == '온보딩') {
             prompt = prompt_text;
             newMessages = messages;
-        }
+        } else if (input.trim() === '') return;
         else {
             prompt = input;
             newMessages = [...messages, { sender: 'user', content: input }];
@@ -151,6 +150,8 @@ function Chatbot_main() {
         const newMessagesForGpt = [...messagesForGpt, { role: 'user', content: prompt }];
         setMessagesForGpt(newMessagesForGpt);
         setInput('');
+
+        console.log(newMessagesForGpt);
 
         try {
             const res = await axios.post(
@@ -168,6 +169,7 @@ function Chatbot_main() {
               );
               const data = res.data.choices[0].message.content;
               setMessages([...newMessages, { sender: 'bot', content: data }]);
+              setMessagesForGpt([...newMessagesForGpt, { role: 'system', content: data }]);
         } catch (error) {
             console.error('Error fetching response from OpenAI:', error);
         }
@@ -201,13 +203,16 @@ function Chatbot_main() {
         const interval = setInterval(() => {
           setComponents((prevComponents) => {
             if (prevComponents.length < 5) {
+                if(prevComponents.length == 4){
+                    sendMessage('온보딩');
+                }
               return [
                 ...prevComponents,
                 <StartOnboard key={prevComponents.length} index={prevComponents.length + 1} />
               ];
             } else if (prevComponents.length == 5) {
-                console.log('hello');
-                sendMessage('온보딩');
+                // console.log('hello');
+                // sendMessage('온보딩');
                 clearInterval(interval);
                 return prevComponents;
             } else {
@@ -227,7 +232,7 @@ function Chatbot_main() {
       <Sidebar>
         <Profile>
             <ProfileImage></ProfileImage>
-            <div>강주연님</div>
+            <div>구자유님</div>
         </Profile>
         <SidbarItemHaed
             onMouseEnter={()=>setIsHoverSidebarItemHeader(true)}

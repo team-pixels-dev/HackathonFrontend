@@ -69,9 +69,7 @@ function Modal(props) {
             <Background/>
             <ModalArea>
                 <ModalContent>
-                    <div>수고하셨습니다!<br/> 픽셀컴퍼니 적응을 위한 기본 과정을 완료하셨어요.<br/>
-                    이제 업무를 수행하러 가볼까요?<br/>
-                    <span>언제든 다시 온보딩을 진행하실 수 있어요.</span>
+                    <div>안녕하세요!<br/> 픽셀컴퍼니 적응을 위한 기본 과정을 진행할게요.<br/>
                     </div>
                     <OkBottun>
                         <div onClick={()=>props.setModalOpen(false)}>

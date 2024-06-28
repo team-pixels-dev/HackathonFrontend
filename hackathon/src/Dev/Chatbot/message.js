@@ -24,7 +24,6 @@ function Message({ message, isUser, setMessageChange }) {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        console.log(message.content);
         if (!isUser && message.content) {
             const interval = setInterval(() => {
                 if (index < sentences.length) {
@@ -35,7 +34,7 @@ function Message({ message, isUser, setMessageChange }) {
                 } else {
                     clearInterval(interval);
                 }
-            }, 1000); // 문장 표시 간격 (1초)
+            }, 2000); // 문장 표시 간격 (1초)
             return () => clearInterval(interval);
         } else {
             setDisplayedText(message.content);

@@ -34,7 +34,7 @@ function StartOnboard({index}) {
         )
     } else if(index == 2){
         return(
-            <WelcomeMessage>처음 입사하셔서 모르는 것 많을 것 같습니다.</WelcomeMessage>
+            <WelcomeMessage>처음 입사하셔서 모르는 것이 많을 것 같습니다.</WelcomeMessage>
         )
     } else if(index == 3){
         return(
