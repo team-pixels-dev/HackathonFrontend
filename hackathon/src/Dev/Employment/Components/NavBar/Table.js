@@ -30,7 +30,7 @@ export default function Table(){
                 </TableRowContents>
             </TableCell>
             <TableCell>
-                <FontAwesomeIcon icon={faChevronRight} style={{position: "relative", right: "-8vh"}}/>
+                <FontAwesomeIcon icon={faChevronRight} style={{position: "relative", right: "-10%"}}/>
             </TableCell>
           </TableRow>
         ))}
@@ -77,8 +77,8 @@ const TableRowContents = styled.div`
         padding: 1vh;
         text-align: center;
         position: relative;
-        right: -28vh;
-        margin: 1vh 0;
+        
+        margin: 1vh -10vh 0 0;
         border-radius: .5vh;
     }
 `
