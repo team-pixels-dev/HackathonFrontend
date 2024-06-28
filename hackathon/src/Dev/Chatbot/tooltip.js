@@ -11,6 +11,7 @@ const Background = styled.div`
 `
 
 const ToolTip0 = styled.div`
+    font-size:18px;
     position:fixed;
     width:calc(486px * 0.6);
     height:calc(157px * 0.6);

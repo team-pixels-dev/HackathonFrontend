@@ -8,6 +8,7 @@ const Response = styled.div`
     width: fit-content;
     max-width: 70%;
     padding: 30px;
+    margin: 10px 10px;
     font-size: 18px;
     border-radius: 26px;
     background-color: ${props => props.theme.colors.primary_bright};
@@ -42,7 +43,7 @@ function Message({ message, isUser, setMessageChange }) {
     }, [message, isUser, sentences]);
 
     return (
-        <div style={{ margin: '8px, 8px', width: '100%', display: 'flex', justifyContent: isUser ? 'end' : 'start' }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: isUser ? 'end' : 'start' }}>
             {isUser ? <Input>{message.content}</Input> : <Response dangerouslySetInnerHTML={{ __html: marked(displayedText) }}></Response>}
         </div>
     );

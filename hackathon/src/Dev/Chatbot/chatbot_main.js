@@ -8,6 +8,9 @@ import axios from 'axios';
 import apiClient from '../../client';
 import Tooltip from './tooltip';
 import SidebarItem from './sidebar_item';
+import Modal from './modal';
+import {prompt_text} from './prompt';
+import StartOnboard from './startOnboard';
 
 const AppContainer = styled.div`
   display: flex;
@@ -25,7 +28,7 @@ const Profile = styled.div`
     display:flex;
     align-items: center;
     /* margin: 10px 0; */
-    font-size : 20px;
+    font-size : 24px;
     height: 100px;
 `
 
@@ -40,6 +43,7 @@ const ProfileImage = styled.div`
 
 const SidbarItemHaed = styled.div`
   margin: 10px 0;
+  font-size : 24px;
   font-weight: 500;
 `;
 
@@ -77,18 +81,13 @@ const ChatboxArea = styled.div`
   align-items: top;
 `;
 
-const WelcomeMessage = styled.div`
-  font-size: 24px;
-  margin : 100px 0px;
-  width:fit-content;
-  color: ${props => props.theme.colors.text};
-  font-weight: bold;
-`;
 
 function Chatbot_main() {
     const [isHoverChatbox, setIsHoverChatbox] = useState(false);
     const [isHoverSidebarItemHeader, setIsHoverSidebarItemHeader] = useState(false);
     const [messageChange, setMessageChange] = useState(0);
+
+    const [modalOpen, setModalOpen] = useState(true);
 
     const [qnas, setQnas] = useState(
         [
@@ -127,6 +126,7 @@ function Chatbot_main() {
 
     const [isFirst, setIsFirst] = useState(true);
     const [messages, setMessages] = useState([]);
+    const [messagesForGpt, setMessagesForGpt] = useState([]);
 
     const [input, setInput] = useState('');
 
@@ -136,18 +136,29 @@ function Chatbot_main() {
 
     const sendMessage = async (e) => {
         e.preventDefault();
+        let prompt;
+        let newMessages;
         if (input.trim() === '') return;
-    
-        const newMessages = [...messages, { sender: 'user', content: input }];
-        setMessages(newMessages);
+        if (input === '온보딩') {
+            prompt = prompt_text;
+            newMessages = messages;
+        }
+        else {
+            prompt = input;
+            newMessages = [...messages, { sender: 'user', content: input }];
+            setMessages(newMessages);
+        }
+
+        const newMessagesForGpt = [...messagesForGpt, { role: 'user', content: prompt }];
+        setMessagesForGpt(newMessagesForGpt);
         setInput('');
 
         try {
             const res = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
                 {
-                  model: 'gpt-3.5-turbo',
-                  messages: [{ role: 'user', content: input }],
+                  model: 'gpt-4o',
+                  messages: newMessagesForGpt,
                 },
                 {
                   headers: {
@@ -189,6 +200,7 @@ function Chatbot_main() {
 
   return (
     <AppContainer>
+      {modalOpen ? <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}/> : null}
       <Tooltip isHoverChatbox={isHoverChatbox} isHoverSidebarItemHeader={isHoverSidebarItemHeader}/>
       <Sidebar>
         <Profile>
@@ -205,7 +217,7 @@ function Chatbot_main() {
       </Sidebar>
       <Main>
         <Content>
-          {isFirst ? <WelcomeMessage>귀하의 입사를 축하드립니다</WelcomeMessage> : null}
+          {isFirst ? <StartOnboard/>: null}
           {messages.map((message, index) => (
             <Message key={index} message={message} isUser={message.sender === 'user'} setMessageChange={setMessageChange} />
           ))}
