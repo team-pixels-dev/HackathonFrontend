@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const WelcomeMessage = styled.div`
   font-size: 24px;
-  margin : 100px 0px;
+  margin : 40vh 0vh;
   width:fit-content;
   color: ${props => props.theme.colors.text};
   font-weight: bold;
@@ -13,7 +13,7 @@ const WelcomeMessage = styled.div`
 
 const StartOnboardButton = styled.div`
     width:500px;
-    height:200px;
+    height:100%;
     background-color: ${props => props.theme.colors.primary_bright};
     display:flex;
     justify-content:center;
@@ -26,17 +26,29 @@ const StartOnboardButton = styled.div`
     }
 `
 
-function StartOnboard() {
-    return(
-        <>
-            <WelcomeMessage>귀하의 입사를 축하드립니다<br/><span>픽셀(주)</span></WelcomeMessage>
-            {/* <StartOnboardButton>
-                <div>
-                   업무 배워보기
-                </div>
-            </StartOnboardButton> */}
-        </>
-    )
+function StartOnboard({index}) {
+
+    if(index == 1){
+        return(
+            <WelcomeMessage>귀하의 입사를 축하드립니다!<br/><span>픽셀(주)</span></WelcomeMessage>
+        )
+    } else if(index == 2){
+        return(
+            <WelcomeMessage>처음 입사하셔서 모르는 것 많을 것 같습니다.</WelcomeMessage>
+        )
+    } else if(index == 3){
+        return(
+            <WelcomeMessage>지금부터 제가 하실 일에 대해 차근차근 설명드리겠습니다.</WelcomeMessage>
+        )
+    } else if(index == 4){
+        return(
+            <WelcomeMessage>모르는게 있으면 망설이지 말고 물어봐주세요!</WelcomeMessage>
+        )
+    } else if(index == 5){
+        return(
+            <WelcomeMessage>그럼 시작하겠습니다!</WelcomeMessage>
+        )
+    }
 }
 
 export default StartOnboard;

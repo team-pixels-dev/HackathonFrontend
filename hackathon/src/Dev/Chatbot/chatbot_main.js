@@ -134,12 +134,11 @@ function Chatbot_main() {
 
     const scrollRef = useRef(null);
 
-    const sendMessage = async (e) => {
-        e.preventDefault();
+    const sendMessage = async (isOnBorad) => {
         let prompt;
         let newMessages;
         if (input.trim() === '') return;
-        if (input === '온보딩') {
+        if (input === '온보딩' || isOnBorad === '온보딩') {
             prompt = prompt_text;
             newMessages = messages;
         }
@@ -187,16 +186,39 @@ function Chatbot_main() {
         sendMessage(e);
     };
       
+    const [components, setComponents] = useState([]);
 
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messageChange, messages]);
+    }, [messageChange, messages, components]);
 
-    useEffect(()=>{
+    
+
+    useEffect(() => {
         setSidebarItems(['정수기 위치', '복사하는 방법', '프린트하는 방법']);
-    }, [])
+        const interval = setInterval(() => {
+          setComponents((prevComponents) => {
+            if (prevComponents.length < 5) {
+              return [
+                ...prevComponents,
+                <StartOnboard key={prevComponents.length} index={prevComponents.length + 1} />
+              ];
+            } else if (prevComponents.length == 5) {
+                console.log('hello');
+                sendMessage('온보딩');
+                clearInterval(interval);
+                return prevComponents;
+            } else {
+                clearInterval(interval);
+                return prevComponents;
+            }
+          });
+        }, 3000);
+    
+        return () => clearInterval(interval);
+      }, []);
 
   return (
     <AppContainer>
@@ -217,7 +239,7 @@ function Chatbot_main() {
       </Sidebar>
       <Main>
         <Content>
-          {isFirst ? <StartOnboard/>: null}
+          {isFirst ? components : null}
           {messages.map((message, index) => (
             <Message key={index} message={message} isUser={message.sender === 'user'} setMessageChange={setMessageChange} />
           ))}
