@@ -5,7 +5,6 @@ import Message from './message';
 import { useState } from 'react';
 import default_profile_image from '../../asset/chatbot_main/default_profile.webp';
 import axios from 'axios';
-import apiClient from '../../client';
 import Tooltip from './tooltip';
 import SidebarItem from './sidebar_item';
 import Modal from './modal';
@@ -89,41 +88,6 @@ function Chatbot_main() {
 
     const [modalOpen, setModalOpen] = useState(true);
 
-    const [qnas, setQnas] = useState(
-        [
-            {
-              "id": 1,
-              "question": "탕비실은 어디에 있나요?",
-              "answer": "탕비실은 2층 안내 데스크 오른편에 있습니다. 탕비실에서는 전자레인지, 냉장고, 씽크대 등이 있으며, 과자, 음료수 등의 다과들이 구비되어 있습니다."
-            },
-            {
-              "id": 2,
-              "question": "5층 화장실은 어디에 있나요?",
-              "answer": "5층 화장실은 5층 사무실 자동문 입구 근처에 있습니다."
-            },
-            {
-              "id": 3,
-              "question": "마케팅 부서는 어디에 있나요?",
-              "answer": "마케팅 부서는 6층에 있습니다. 6층 사무실에서 맨 왼쪽에 있는 부서가 마케팅 부서입니다."
-            },
-            {
-              "id": 4,
-              "question": "복합기를 사용해서 문서를 양면으로 복사하고 싶은데 어떻게 해야 하나요?",
-              "answer": "알겠습니다. 복합기를 사용해서 문서를 복사하는 방법을 알려드리겠습니다. 하지만 문서의 크기나 컬러 여부 등에 대한 정보 등 자세한 정보가 더 필요합니다."
-            },
-            {
-              "id": 5,
-              "question": "문서를 흑백으로 양면 복사하고 싶어요. 용지는 A4 용지를 사용해요.",
-              "answer": "알겠습니다. 복합기를 사용해서 문서를 A4 용지 크기로 흑백 양면 복사하는 방법을 알려드리겠습니다.\n1. 복합기의 커버 위에 복사할 종이를 놓습니다.\n2. 복합기의 디스플레이에서 ‘복사’를 누릅니다.\n3. ‘컬러 선택’에서 컬러를 ‘흑백’으로 선택합니다.\n4. ‘양면’에서 ‘양면-\u003E양면’을 누릅니다.\n5. ‘시작’ 버튼을 누릅니다."
-            },
-            {
-              "id": 6,
-              "question": "매출 현황표를 바탕으로 그래프를 그리고 싶은데 어떻게 해야 하나요?",
-              "answer": "(주)픽셀은 매출 현황표를 바탕으로 그래프를 그릴 때는 조건부 서식를 사용하고 있습니다. 따라서 조건부 서식을 이용해서 매출 현황 그래프를 그려보도록 하겠습니다.\n1. 표에서 그래프로 나타내고 싶은 부분을 드래그합니다.\n2. 엑셀 상단에 ‘홈’ 탭에서 ‘조건부 서식’을 클릭합니다.\n3. ‘조건부 서식’에서 ‘데이터 막대’를 클릭하고, 원하는 색상을 선택합니다."
-            }
-          ]
-    );
-
     const [isFirst, setIsFirst] = useState(true);
     const [messages, setMessages] = useState([]);
     const [messagesForGpt, setMessagesForGpt] = useState([]);
@@ -173,14 +137,6 @@ function Chatbot_main() {
         } catch (error) {
             console.error('Error fetching response from OpenAI:', error);
         }
-
-        // apiClient.post('/qna',{"question":"탕비실은 어디에 있나요?"})
-        //     .then(res => {
-        //         console.log(res);
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
     };
 
     const handleKeyPress = (e) => {
@@ -195,8 +151,6 @@ function Chatbot_main() {
             scrollRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messageChange, messages, components]);
-
-    
 
     useEffect(() => {
         setSidebarItems(['정수기 위치', '복사하는 방법', '프린트하는 방법']);
